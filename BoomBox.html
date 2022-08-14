@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    
+<!DOCTYPE html>
+<!--
+
+Tumblr Boombox created by Robin
+github @robinpx
+
+Last modified July 2018
+Icons found on Icon Finder
+g
+-->
+<style>
+
+
+/* Scrollbar */
+
+:root {
+    --customColor: #d95e40;
+}
+
+::-webkit-scrollbar {
+    height:3px;
+    width:5px;
+    background:#cccccc;
+}
+
+::-webkit-scrollbar-thumb {
+    background:#333333;
+    border-radius:5px;
+}
+
+::-webkit-scrollbar-track {
+    background:#cccccc;
+}
+
+/* Basics */
+
+body {
+    color:#000000;
+    font-family:roboto mono, sans-serif;
+    letter-spacing:0.05em;
+    font-size:13px;
+    margin:0;
+    padding:0;
+    overflow: hidden;
+
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
+#title a, #title a:hover {
+    font-size:1.4em;
+    color:#000;
+    line-height:150%;
+    font-weight:bold;
+    border-bottom:2px solid var(--customColor);
+}
+
+#labels, #desc, #title, #defined, #menuwrap {
+    
+    font-family:nunito, sans-serif;
+}
+
+#buttons div, .tune, #bars, #loadmore, #mode, #currently {
+    cursor:pointer;
+}
+
+.lin svg, #currently svg {
+    display:none;
+}
+
+audio {display:none!important;}
+
+/* Info */
+
+.wrap {
+    width:calc(100% - 4em);
+    padding:1.5em 2em;
+}
+
+.wrap:first-child {
+    margin-bottom:1em;
+}
+
+#desc {
+    margin:2em 0em;
+}
+
+.search .input {
+    width:calc(100% - 2em);
+    padding:0.5em 1em;
+    font-size:1em;
+    font-family:roboto mono, monospace;
+    border-radius:7px;
+    border:1px solid #eeeeee;
+    outline:0;
+
+}
+
+#tagbar .input, #usernamebar .input {
+  font-size:0.85em;
+  border:1px solid var(--customColor);
+  opacity: 0.5;
+}
+
+#tagbar {
+  margin-bottom:1em;
+}
+
+.bodyfilter {
+    height:auto;
+    width:auto;
+}
+
+.filtered {
+  filter:invert(100%);
+  -webkit-filter:invert(100%);
+}
+
+#currentTrack {
+    font-weight:bold;
+}
+
+#defined {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  position: fixed;
+  bottom: 0;
+  width: 99%;
+  height: 32px;
+  z-index: 998;
+}
+
+#currentUser {
+    text-transform:lowercase;
+}
+
+#more {
+	font-weight:bold;
+}
+
+#currentPost {
+    height: 15px;
+    width: 100%;
+	overflow: hidden;
+	padding: 5px;
+	position: fixed;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    
+}
+.currentPostFill {
+    width: 100%;
+    height: 100%;
+    	padding: 5px;
+}
+
+
+.trackFill {
+    height: 25px;
+width: 25px;
+overflow: hidden;
+position: absolute;
+right: 0;
+padding: 10px;
+opacity: 0.1;
+}
+
+
+.trackFill:hover{
+    opacity: 0.4;
+}
+
+.trackFill svg {
+    display: flex !important;
+}
+
+/* Menu */
+
+#menu #open {
+  width:100%;
+  height: 100%;
+}
+
+#menu #close {
+  width:100%;
+  height: 100%;
+  display:none;
+}
+
+#menu {
+  float:right;
+  position: fixed;
+  top: 2px;
+  right: 10px;
+  z-index: 999;
+  
+  text-align:center;
+  border-radius:10px;
+  padding:5px;
+  width:30px;
+  height:30px;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  cursor:pointer;
+}
+
+#menuwrap {
+  display:none;
+  z-index:990;
+  right:0;
+  margin-top:0.5em;
+  position:absolute;
+  height:100%;
+  width:100%;
+}
+
+#menuinfo {
+  width:100%;
+  border-radius:7px;
+}
+
+#menuinfo .wrap {
+  margin-bottom:0.5em!important;
+}
+
+#menuinfo p:first-child {
+  margin-top:0;
+}
+
+.sun svg, .moon svg {
+  width:0.9em;
+  margin-right:0.5em;
+}
+
+.sun, .moon {
+  vertical-align:middle;
+  display:inline-block;
+}
+
+#mode {
+    height:1.2em;
+    color:#1753b7;
+    display:inline-block;
+}
+
+#menuinfo .section {
+  margin:2em 0em;
+}
+
+.filtertype {
+  color:#999999;
+  border-radius:7px;
+  display:inline-block;
+  margin:1em;
+  margin-top:0;
+  margin-left:0;
+  cursor:pointer;
+}
+
+.filtertype:hover, .filterout {
+  color:#1753b7;
+}
+
+/* Tracks */
+
+
+#labels {
+    position:fixed;
+   width: 100%;
+    z-index:990;
+    top: 0;
+    left: 0;
+    border-bottom:1px solid #e5e5e5;
+    padding:0.8em 1em 0.5em 1em!important;
+    height:25px;
+    background:#eee;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+#labels div {
+    width: auto;
+}
+#labels #playlistStats{
+    min-width: 100px;
+    
+    
+}
+
+#tracks .lin {
+    padding:1em;
+    display:flex;
+    height: 45px;
+    align-items: center;
+}
+
+.lin div {
+    width:100%;
+    padding-right:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    display:inline-block;
+}
+
+.lin div:first-child {
+    font-weight:bold;
+}
+
+.highlight {
+    color:var(--customColor) !important;
+}
+
+.lin svg, #currently svg {
+    vertical-align:middle;
+    margin-right:1.5em;
+}
+
+.highlight svg {
+    display:inline-block!important;
+}
+
+.tune {
+    background:#f7f7f7;
+    color:#333333;
+}
+
+.lin:nth-child(even) {
+    background:#eaeaea!important;
+}
+
+#loadmore {
+    background: var(--customColor) !important;
+    font-weight:bold!important;
+    color: #fff;
+    height: 30px;
+    width: 30px !important;
+    border-radius: 5px;
+    position: fixed;
+    top: 5px;
+    right: 50px;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0.6;
+}
+#loadmore div {
+        margin: 0 !important;
+    padding: 0 !important;
+}
+
+#loadmore:hover{
+    opacity: 0.5;
+}
+
+/* Player */
+
+#buttons {
+    opacity:0;
+    text-align:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#buttons div {
+    display:inline-block;
+    vertical-align:middle;
+    margin:10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.on {
+    opacity:0.4!important;
+}
+
+#active {
+    margin: 10px;
+
+}
+#active div {
+    margin: 0px;
+}
+
+#buttons div:hover {opacity:0.6;}
+
+#progressbg, #progress, #loading {
+    height:5px;
+    border-radius:7px;
+}
+
+#progressbg, #progress, #loading {
+        background:var(--customColor);
+    
+}
+a, #currentTrack, #currentArtist {
+    color: var(--customColor);
+    text-decoration:none;
+    border:0;
+}
+
+a:hover, #mode:hover {
+    opacity: 0.8;
+}
+
+
+#progress, #loading {
+    margin-top:-5px;
+    position:absolute;
+}
+
+#progressbg {
+    margin-top:0px;
+    opacity:0.1;
+    overflow: hidden;
+    z-index: 990;
+}
+
+#progress {
+    opacity:1;
+       overflow: hidden;
+}
+
+#loading {
+    opacity:0.2;
+       overflow: hidden;
+}
+
+#progressnum {
+    position: fixed;
+    bottom: 6px;
+    width: 100%;
+}
+
+#progressnum span {
+    font-size:0.8em;
+}
+
+#currenttime {
+    float:left;
+    margin-left: 5px;
+}
+
+#currentdura {
+    float:right;
+    margin-right: 5px;
+}
+
+.error {
+    opacity:0.5!important;
+}
+
+    .lin:nth-child(2), #tracks {
+        margin-top:0px!important;
+    }
+
+    .lin {
+        min-width:calc(100% - 2em)!important;
+        width:calc(100% - 2em)!important;
+    }
+
+    #menuwrap {
+      overflow-y:auto!important;
+    }
+
+    #menuinfo {
+      height:calc(100% + 45px + 1em);
+    }
+
+    .wrap {
+        min-width:calc(100% - 4em)!important;
+        width:calc(100% - 4em)!important;
+        padding:1.5em 2em!important;
+    }
+    
+    #tracks {
+    text-align:left;
+    position:relative;
+    overflow:auto;
+    min-height:4em;
+    width:100%;
+    height: 100%;
+}
+#tracksContainer {
+    position: fixed;
+    bottom: 90px;
+    top: 45px;
+    width: 100%;
+    overflow: hidden;
+}
+     
+        #infobar {
+            display: none;
+    top:0;
+    right:0;
+    position:fixed;
+    height:100% !important;
+    width: 100%;
+    z-index: 999;
+    margin-right: -15px;
+    padding: 15px;
+    background: rgba(254,254,254, 0.97);
+}
+
+#playerbar {
+    width:100%;
+    z-index:990;
+    position:fixed;
+    bottom:0;
+    left:0;
+    border-top:1px solid #e5e5e5;
+    height:90px;
+    background: #eee;
+    overflow: hidden;
+    border-radius: 0px 0px 5px 5px;
+}
+
+
+  #bars {
+      position: fixed;
+      bottom: 40px;
+      left: 0;
+      width: 100%;
+      
+  }
+  
+  .outputContainer {
+      position: absolute;
+      bottom: 0px; 
+      left: 0px; 
+      width: 100%;
+      height: 70px;
+  }
+  
+  .outputCanvas {
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      opacity: 0.3;
+  }
+  
+  #buttons {
+      position: fixed;
+      bottom: 45px;
+      left: 0;
+      z-index: 999;
+      width: 100%;
+  }
+   
+</style>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Tumblr Boombox</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes">
+	<meta name="description" content="Play every audio post uploaded on a Tumblr account. Made by Robin.">
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Nunito" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+   </head>
+   <body>
+   
+   	<div id="infobar">
+		   
+		   <!-- Popup menu -->
+		   <div id="menuwrap">
+		      <div id="menuinfo">
+		      
+		   
+		   <div class="wrap">  
+		   <div id="title">
+		<a href="https://robinpx.github.io/boombox/">boombox</a>
+		   </div>
+		   </div>
+		      
+		 	  <div class="wrap">
+				<p>Play audio under a certain tag.</p>
+				<form class="search" id="tagbar" action="javascript:return false;"><input type="text" class="input" placeholder="Enter a tag"></form>
+			</div>
+			
+			
+			<!--
+				      <div class="wrap">
+	      <p>Enter a username to load from.</p>
+	         <form class="search" id="usernamebar" action="javascript:return false;"><input type="text" class="input" placeholder="Enter a username"></form> 
+	         </div>-->
+			
+			<div class="wrap">
+		   <p>Play every audio post uploaded on a <a href="https://www.tumblr.com">Tumblr</a> account with this minimal audio player.</p>
+		   <p>Original code by <a href="https://github.com/robinpx/boombox">Robin</a>.<br><sup>Modified by <a href="https://slimold.tumblr.com/">Schu</a>.</sup></p>
+		       
+		       
+		   </p><br><br><br>
+	      </div>
+	      
+
+			
+			<!--<div class="wrap" style="display: none;">
+				<p>Click to filter out audio hosted by the following sites.</p>
+				<a class="filtertype" id="spotify">Spotify</a>
+				<a class="filtertype" id="soundcloud">Soundcloud</a>
+				<a class="filtertype" id="tumblr">Tumblr</a>
+				<a class="filtertype" id="bandcamp">Bandcamp</a>
+			</div>-->
+	
+		</div>
+	   </div>
+	   <!-- Popup menu END -->
+	      
+	      
+	   
+	   </div>
+	   
+	   <div id="defined">
+	      <div id="currently">
+	 <div id="currentTrack"></div><!--<div id="by"> - </div><div id="currentArtist">-->
+	     
+	 </div>
+	 
+	 <div id="currentPost" title="Link to the Tumblr post">︎</div>
+	   </div>
+	   </div>
+   
+   		   <div id="menu">
+				<svg id="open" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26" height="32" viewBox="0 0 26 32">
+				<g id="icomoon-ignore">
+				</g>
+				<path d="M0.205 6.937h25.59v4.265h-25.59v-4.265z" fill="#000000"></path>
+					<path d="M0.205 13.867h25.59v4.265h-25.59v-4.265z" fill="#000000"></path>
+					<path d="M0.205 20.798h25.59v4.265h-25.59v-4.265z" fill="#000000"></path>
+					</svg>
+					<svg id="close" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+					<g id="icomoon-ignore">
+					</g>
+					<path d="M10.722 9.969l-0.754 0.754 5.278 5.278-5.253 5.253 0.754 0.754 5.253-5.253 5.253 5.253 0.754-0.754-5.253-5.253 5.278-5.278-0.754-0.754-5.278 5.278z" fill="#000000"></path>
+					</svg>
+				</div>
+	
+	
+	<!-- Song list section -->
+	<div id="labels" class="lin">
+	<div id="playlistStats"></div>
+	    
+	</div>
+
+    <div id="tracksContainer">
+	<div id="tracks">
+	</div>
+	</div>
+	
+	 <div id="playerbar">
+	    <div class="outputContainer">
+     <canvas id="output" class="outputCanvas"></canvas>
+     </div>
+	 
+	   <div id="buttons" style="opacity: 1;">
+		<div id="repeat">
+		   <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1.2em" height="1.2em" x="0px" y="0px" viewBox="0 0 51.4 51.4" style="enable-background:new 0 0 51.4 51.4;" xml:space="preserve"><g><path d="M1.7,25.2c0.553,0,1-0.447,1-1c0-6.065,4.935-11,11-11h24v8.964L51.4,12.2L37.7,2.236V11.2h-24c-7.168,0-13,5.832-13,13C0.7,24.753,1.147,25.2,1.7,25.2z"></path><path d="M49.7,26.2c-0.553,0-1,0.447-1,1c0,6.065-4.935,11-11,11h-24v-8.964L0,39.2l13.7,9.964V40.2h24c7.168,0,13-5.832,13-13C50.7,26.647,50.253,26.2,49.7,26.2z"></path></g></svg>
+		</div>
+
+		<div id="prev">
+		   <svg height="1.5em" id="Layer_1" style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="1.5em" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M256,128L32,256l224,128V260.8L480,384V128L256,251.2V128L256,128z"></path></svg>
+		</div>
+		<div id="active">
+		   <div id="play">
+		      <svg height="1.75em" id="Layer_1" style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="1.75em" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><path d="M128,96v320l256-160L128,96L128,96z"></path></g></svg></div>
+		   <div id="pause" style="display: none;">
+		      <svg height="1.75em" id="Layer_1" style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="1.75em" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><rect height="320" width="79" x="128" y="96"></rect><rect height="320" width="79" x="305" y="96"></rect></g></svg>
+		   </div>
+		</div>
+
+		<div id="next">
+		     <svg height="1.5em" id="Layer_1" style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" width="1.5em" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M256,128v123.2L32,128v256l224-123.2V384l224-128L256,128L256,128z"></path></svg>
+		</div>
+				
+		<div id="shuffle">
+		      <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1.4em" height="1.4em" x="0px" y="0px" viewBox="0 0 49.7 49.7" style="enable-background:new 0 0 49.7 49.7;" xml:space="preserve"><g><path d="M27,13.85h9v8.964l13.7-9.964L36,2.886v8.964h-9c-7.168,0-13,5.832-13,13c0,6.065-4.935,11-11,11H1c-0.553,0-1,0.447-1,1
+					s0.447,1,1,1h2c7.168,0,13-5.832,13-13C16,18.785,20.935,13.85,27,13.85z"></path><path d="M1,13.85h2c2.713,0,5.318,0.994,7.336,2.799c0.191,0.171,0.43,0.255,0.667,0.255c0.274,0,0.548-0.112,0.745-0.333
+					c0.368-0.412,0.333-1.044-0.078-1.412C9.285,13.025,6.206,11.85,3,11.85H1c-0.553,0-1,0.447-1,1S0.447,13.85,1,13.85z"></path>
+				<path d="M36,35.85h-9c-2.685,0-5.27-0.976-7.278-2.748c-0.411-0.365-1.044-0.327-1.411,0.089c-0.365,0.414-0.326,1.046,0.089,1.411
+				c2.374,2.095,5.429,3.248,8.601,3.248h9v8.964l13.7-9.964L36,26.886V35.85z"></path></g>
+		      </svg>
+		</div>
+		
+		
+	   </div>
+
+	   <div id="bars">
+	      <div id="progressbg" value="0.5" max="1"></div>
+		  <div id="loading" style="width: 0px;"></div>
+		  <div id="progress" style="width: 0px;"></div>
+	      </div>
+	    <div id="progressnum">
+	      <span id="currenttime">00:00</span>
+	          <span id="currentdura">00:00</span>
+	      </div>
+	</div>
+
+	<div id="player"><audio class="aud" crossorigin="anonymous" src="undefined" preload="auto" id="song-0" controls=""></audio></div>
+   
+
+</body>
+
+<script>
+/* Visualizer script */
+var colorString = getComputedStyle(document.documentElement).getPropertyValue('--customColor');
+var ua = navigator.userAgent;
+var isMobile = /Android|Safari|webOS|iPhone|iPad|iPod/i.test(ua);
+
+var context = null;
+
+function playAudioVisualize(audioSource) {
+    var bars = 40;
+    var audio = document.getElementById(audioSource);
+    var canvas, source, analyser, fFrequencyData, barX, barWidth, barHeight, ctx;
+    initPlayer();
+    
+    function initPlayer() {
+        if(context != null){
+        context.close();}
+        context = new AudioContext();
+        
+        analyser = context.createAnalyser();
+        canvas = document.getElementById('output');
+        ctx = canvas.getContext('2d');
+        ctx.fillStyle = colorString;
+        source = context.createMediaElementSource(audio);
+        source.connect(analyser);
+        analyser.connect(context.destination);
+        drawFrames();       
+    }
+    
+    var k = 0; //keep track of total number of frames drawn
+    function drawFrames() {
+        window.requestAnimationFrame(drawFrames);
+        analyser.fftsize = 128;
+        fFrequencyData = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(fFrequencyData);
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        numBarsBars = 16;
+        
+        //bar style visual representation
+        function drawBars(numBars) {
+            for(var i = 0; i < numBars; i++) {
+                barX = i * (canvas.width / numBars);
+                barWidth = (canvas.width / numBars - 5);
+                barHeight = -(fFrequencyData[i] / 2);
+                ctx.fillRect(barX, canvas.height, barWidth, barHeight);
+            }
+        }
+        
+
+        drawBars(bars);
+        
+        k++;        
+    }
+}
+
+       /**
+ * Tumblr Boombox Script
+ * github @robinpx
+ **/
+ 
+const boombox = function() {
+
+var audioFiles = [];
+var postURLs = [];
+var indexArray = [];
+
+var linkOfWindow = window.location.href;
+var indexOfUsername = linkOfWindow.indexOf("?username=");
+var indexOfTag = linkOfWindow.indexOf("?tag=");
+var tagged = "";
+var currentUrl = window.parent.location;
+var urlParse = "";
+if(currentUrl.toString().includes("/tagged/")){
+    urlParse = currentUrl.toString().split("/");
+    tagged = urlParse[4].replace("%3A-", ": ");
+    
+}
+if (indexOfTag > 0) {
+    tagged = linkOfWindow.substring(indexOfTag+5, indexOfUsername);
+}
+var username = "audiosketch";
+
+var count = -1;
+var postsStart = 0;
+var postsEnd = 30;
+var postLength = 33;
+var postsTotal = 33;
+var numOfSongs = 0;
+var index = 0;
+
+var repeatBool = false;
+var shuffleBool = false;
+var shuffleCheck = true;
+var shuffledIndex = [];
+var shuffleNum = 0;
+
+var current = "";
+
+var timer;
+	
+var bool = true;
+
+var debugState = false;
+var initialize = true;
+	
+var trackCache = "";
+
+var setVolume = 0.5;
+
+$.getScript("//" + username + ".tumblr.com/api/read/json?type=audio&tagged=" + tagged, function() {
+    postsTotal = tumblr_api_read["posts-total"];
+    postsStart = tumblr_api_read["posts-start"];
+
+    if (postsTotal === 0 || isNaN(postsTotal)) {
+        $("#loadmore").remove();
+        return;
+    }
+    $("#currentUser").append("<a href='https://" + username + ".tumblr.com'>" + username + "</a>");
+    var link = "https://" + username + ".tumblr.com/api/read/json?start=" + postsStart + "&num=" + postsTotal + "&type=audio&tagged=" + tagged;
+    retrieveAPI(link);
+});
+
+debugLog("--Start");
+
+ function debugLog(logMessage){
+     if(debugState){
+     console.log(logMessage);
+     
+     console.log("Count (-1):" + count);
+console.log("postsStart (0):" + postsStart);
+console.log("postsEnd (30):" +postsEnd);
+console.log("postLength (33):" + postLength);
+console.log("postsTotal (33):" + postsTotal);
+console.log("numOfSongs (0):" + numOfSongs);
+console.log("Index (0):" + index);
+}
+     
+ }
+ 
+ /**
+ * Retrieves audio posts and binds click method.
+ * Add load more button if there are more tracks.
+ **/
+function retrieveAPI(url) {
+    $.getScript(url, function() {
+      var i = 0;
+      while (bool && i < 30) {
+            try {
+                var post = tumblr_api_read.posts[i];
+		postLength = tumblr_api_read.posts.length;
+                var audioEmbed = post["audio-embed"];
+                var track = post["id3-title"];
+                var artist = post["id3-artist"];
+            	var postURL = decodeURIComponent(post["url"]);
+                var audiofile = audioEmbed.substring(audioEmbed.indexOf("src") + 5, audioEmbed.indexOf('" frameborder'));
+                var fileType = getFileType(audiofile);
+                if (fileType === 0) {
+                    processTumblrAudio(audiofile);
+                    appendTracks(track, artist, "tumblr");
+                    postURLs[count] = postURL;
+                }
+            	else if (fileType === 1) {
+            	    count++;
+            	    audioFiles[count] = decodeURIComponent(audiofile);
+            	    appendTracks(track, artist, "tumblr");
+		    postURLs[count] = postURL;
+            	}
+                else if(fileType === 2) {
+                    processSCAudio(audiofile);
+                    appendTracks(track, artist, "soundcloud");
+                    postURLs[count] = postURL;
+                }
+                else if (fileType === 3) {
+		    count++;
+	       	    processBCAudio(audiofile, count);
+		    appendTracks(track, artist, "bandcamp");
+		    audioFiles[count] = "./audio/emptysong.mp3";
+		    postURLs[count] = postURL;
+                }
+		else if (fileType === 4) {
+		    count++;
+		    processSPAudio(audiofile, count);
+		    appendTracks(track, artist, "spotify");
+		    audioFiles[count] = "./audio/emptysong.mp3";
+		    postURLs[count] = postURL;
+		}
+                else {
+                    postsEnd++;
+                }
+            }
+            catch(e) {
+                console.log(e);
+                i++;
+            }
+		i++;
+        }
+    }).done(function() {
+	numOfSongs = audioFiles.length;
+	//console.log(numOfSongs + " files processed.| postsEnd: " + postsEnd);
+	
+	var n = 0;
+	while(n < numOfSongs){
+	    indexArray[n] = n;
+	    n++
+	}
+	
+
+	if (postsEnd <= postsTotal && (postLength + postsEnd) > 50) {
+	   $("#labels").append("<div id='loadmore' onClick='boombox.loadMore()'><div> + </div></div>");
+	}
+	console.log("Setting cache and filter...");
+	$("#tracks").prepend(trackCache);
+	trackCache = $("#tracks .tune").detach();
+	filter();
+	$("#playlistStats").empty().append(indexArray.length + " of " + postsTotal + " tracks.");
+	
+	if(initialize){
+	setSong("song-0");
+	initialize = false;
+	}
+
+    });
+    
+  
+}
+
+/**
+ * Checks if audio file is from Tumblr
+ * Returns a number -- 0 = tumblr, 1 = mp3, 2 = soundcloud, 3 = bandcamp
+ **/
+function getFileType(file) {
+    if (file.indexOf(username) > 0) {
+        return 0;
+    }
+    else if (file.indexOf("mp3") > 0) {
+        return 1;
+    }
+    else if(file.indexOf("soundcloud") > 0) {
+        return 2;
+    }
+    else if(file.indexOf("bandcamp") > 0) {
+        return 3;
+    }
+    else if(file.indexOf("spotify") > 0) {
+        return 4;
+    }
+    else {
+        return false;
+    }
+}
+
+function appendTracks(track, artist, type) {
+    if (track === undefined) {
+        track = "Unknown";
+    }
+    if (artist === undefined) {
+        artist = "Unknown";
+    }
+    $("#tracks").append("<div class='" + type + " lin song-" + count + " tune'><div class='track'><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='1.4em' height='1.2em' viewBox='0 0 30 32'><g id='icomoon-ignore'></g><path d='M13.652 5.265l-7.696 6.134h-5.955v4.748l-0.003 0.003 0.003 0.003v4.698h5.987l7.664 6.015v-6.015h0.001v-9.451h-0.001z' fill='#000000'></path><path d='M16.105 10.726c1.142 1.522 1.746 3.336 1.746 5.246 0 1.95-0.627 3.795-1.813 5.335l0.832 0.641c1.329-1.726 2.032-3.792 2.032-5.976 0-2.139-0.677-4.171-1.957-5.877l-0.84 0.631z' fill='#000000'></path><path d='M20.336 6.919l-0.809 0.669c1.973 2.389 3.059 5.416 3.059 8.521 0 3.069-1.009 5.956-2.919 8.348l0.82 0.655c2.060-2.58 3.148-5.693 3.148-9.003-0-3.349-1.172-6.613-3.3-9.19z' fill='#000000'></path><path d='M23.606 3.51l-0.789 0.694c2.896 3.289 4.492 7.518 4.492 11.909 0 4.302-1.539 8.467-4.335 11.727l0.798 0.683c2.957-3.45 4.587-7.858 4.587-12.41 0-4.647-1.688-9.123-4.753-12.603z' fill='#000000'></path></svg>" + track + "</div> </div>");
+    
+}
+
+/**
+ * Decodes URL and/or retrieves file
+ **/
+function processTumblrAudio(file) {
+    file = file.substring(file.indexOf("audio_file") + 11, file.length);
+    count++;
+    audioFiles[count] = decodeURIComponent(file);
+}
+
+function processSCAudio(file) {
+    count++;
+    file = decodeURIComponent(file);
+    file = file.substring(file.indexOf("url") + 4, file.indexOf("&amp"));
+    audioFiles[count] = file + "/stream?client_id=N2eHz8D7GtXSl6fTtcGHdSJiS74xqOUI";
+    // client id @ wordpress
+}
+
+function processBCAudio(audioUrl, count) {
+    var url = audioUrl.substring(0, audioUrl.indexOf('" allowtransparency'));
+    var file = "";
+
+    $.getJSON("https://whateverorigin.herokuapp.com/get?url=" + encodeURIComponent(url) + "&callback=?", function(data){
+	var contentstr = data.contents;
+
+	var i = contentstr.indexOf("var playerdata"); 
+	var i2 = contentstr.indexOf("var parentpage");
+	contentstr = contentstr.substring(i, i2);
+	var mp3str = '"file":{"mp3-128":"';
+	var i3 = contentstr.indexOf(mp3str) + mp3str.length;
+	var i4 = i3 + contentstr.substring(i3).indexOf('"}');
+	contentstr = contentstr.substring(i3, i4);
+
+	file = contentstr;
+
+    }).done(function() {
+	audioFiles[count] = file;
+    });
+}
+
+function processSPAudio(audioUrl, count) {
+     var url = audioUrl;
+     var file = "";
+
+     $.getJSON("https://whatever-origin.herokuapp.com/get?url=" + encodeURIComponent(url) + "&callback=?", function(data){
+	var contentstr = data.contents;
+
+	var i = contentstr.indexOf('script id="resource"');
+	var i2 = contentstr.indexOf('"track_number"');
+	contentstr = contentstr.substring(i, i2);
+
+	var mp3str = '"preview_url":"';
+	var i3 = contentstr.indexOf(mp3str) + mp3str.length;
+	var i4 = i3 + contentstr.substring(i3).indexOf('",');
+	contentstr = contentstr.substring(i3, i4).replace(/\\/g, "");
+
+	file = contentstr;
+
+     }).done(function() {
+	audioFiles[count] = file;
+    });
+}
+
+/**
+ * Sets up the boombox and adds
+ * click method to play and pause buttons.
+ **/
+function init() {
+    numOfSongs = audioFiles.length;
+    index = 0;
+    current = "song-" + index;
+    setPlayer();
+    $("." + current).addClass("highlight");
+    
+    setBoombox();
+    $("#pause").click(function() {
+        document.getElementById(current).pause();
+        $("#play").show();
+        $(this).hide();
+    });
+
+    $("#play").click(function() {
+        $("audio").unbind("ended", endedSong);
+        $("audio").bind("ended", endedSong);
+        checkError();
+        /* bind and check errors for first song */
+        document.getElementById(current).ontimeupdate = function() { updateProgress(); }
+        document.getElementById(current).play();
+        $("#pause").show();
+        $(this).hide();
+    });
+}
+
+/**
+ * setBoombox sets up the welcome screen, currently playing
+ * section if tracks are not null, or no tracks screen if
+ * there are no tracks.
+ **/
+function setBoombox() {
+   
+    if ($(".highlight .track").html() !== null) {
+        $("#defined").fadeIn();
+        changeCurrentSong();
+    }
+}
+
+function scrollToSong() {
+        var scr = "+=" + ($(".highlight").first().offset().top - 45);
+        var elem = $("#tracks");
+
+        elem.animate({
+            scrollTop : scr
+        }, 500);
+    }
+
+function setSongClass(direction) {
+	if (direction === "next") {
+		if ($("#tracks").find(".tune").length - $("." + current).index() <= 1) {
+			current = $(".tune").first().attr("class");
+		}
+		else {
+			current = $("." + current).next().attr("class");
+		}
+	}
+	else if (direction === "prev") {
+		if ($("." + current).prev().length === 0) {
+			current = $(".tune").last().attr("class");
+		}
+		else {
+			current = $("." + current).prev().attr("class");
+		}
+	}
+	current = current.substring(current.indexOf("song-"), current.indexOf(" tune"));
+	index = current.substring(current.indexOf("song-")+5, current.length);
+
+}
+
+function nextSong() {
+     exitSong();
+     setSongClass("next");
+     enterSong();
+     boombox.scrollToSong();
+}
+
+function prevSong() {
+    exitSong();
+    setSongClass("prev");
+    enterSong();
+    boombox.scrollToSong();
+}
+
+function repeatSong() {
+    document.getElementById(current).currentTime = 0;
+    document.getElementById(current).pause();
+    document.getElementById(current).ontimeupdate = function() { updateProgress(); }
+    document.getElementById(current).play();
+ }
+
+function shuffleSong() {
+    if(shuffleCheck){
+    shufflePlaylist(indexArray);}
+
+    shuffleNum++;
+    if(shuffleNum < shuffledIndex.length){
+        //console.log("Shuffle num: " + shuffleNum + " | Posts total: " + postsTotal);
+        exitSong();
+        index = shuffledIndex[shuffleNum];
+        current = "song-" + index;
+        
+        enterSong();
+        boombox.scrollToSong();
+        
+    }
+    else {
+        //console.log("End of shuffle: " + shuffleNum + " of " + postsTotal);
+        shuffleNum = 0;
+        shuffleCheck = true;
+        exitSong();
+        index = shuffledIndex[shuffleNum];
+        current = "song-" + index;
+        //console.log("Current: " + current);
+        
+        enterSong();
+        boombox.scrollToSong();
+    }
+    /*
+    songNum = parseInt(current.slice(5));
+    index = Math.floor(Math.random() * ($(".tune").length));
+    //console.log("Current: " + songNum + "| Next: " + index);
+    
+    while(index == songNum){
+        index = Math.floor(Math.random() * ($(".tune").length));
+        //console.log("Looping: " + index);
+    }
+    exitSong();
+    
+    current = "song-" + index;
+    enterSong();
+    boombox.scrollToSong();*/
+}
+function shufflePlaylist(inputArray){
+     //console.log("Shuffling.")
+     songNum = parseInt(current.slice(5));
+     
+        for (var i = inputArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [inputArray[i], inputArray[j]] = [inputArray[j], inputArray[i]];
+        }
+      
+        
+        swapLocationA = inputArray.findIndex(checkCurrent);
+        swapValue = parseInt(inputArray[0]);
+        //console.log("Swapping index0(" + inputArray[0] + ") with index" + swapLocationA + "(" + inputArray[swapLocationA] + ")");
+        inputArray[0] = songNum;
+        inputArray[swapLocationA] = swapValue;
+        
+        shuffledIndex = inputArray;
+        shuffleCheck = false;
+        
+        //console.log("New shuffle: " + inputArray);
+       
+        
+}
+
+function checkCurrent(inputArray) {
+  return inputArray == songNum;
+}
+
+function pressedSong() {
+    var className = $(this).attr("class");
+    var songIndex = className.indexOf("song-");
+    var songNum = className.substring(songIndex+5, className.length);
+    songNum = parseInt(songNum);
+    exitSong();
+    index = songNum;
+    current = "song-" + index;
+    
+    if(shuffleBool == true){
+        shuffleNum = 0;
+        shufflePlaylist(indexArray);
+        index = shuffledIndex[shuffleNum];
+        current = "song-" + index;
+    }
+    
+    enterSong();
+}
+
+function endedSong(){
+    if (repeatBool === true) {
+        repeatSong();
+    }
+    else if (shuffleBool === true) {
+        shuffleSong();
+    }
+    else {
+        nextSong();
+    }
+}
+
+/**
+ * Resets the current song and pauses it.
+ **/
+function exitSong() {
+    window.clearTimeout(timer);
+    document.getElementById(current).currentTime = 0;
+    document.getElementById(current).pause();
+    $("." + current).removeClass("highlight");
+    $("#play").show();
+    $("#pause").hide();
+}
+
+/**
+ * Sets up the new current song and plays it.
+ **/
+function enterSong() {
+    setPlayer();
+    document.getElementById(current).ontimeupdate = function() { updateProgress(); }
+    document.getElementById(current).play();
+    $("." + current).addClass("highlight");
+    $("#pause").show();
+    $("#play").hide();
+    checkError();
+    changeCurrentSong();
+    
+}
+
+function setSong(newSongID){
+    setPlayer();
+    
+    current = newSongID;
+    document.getElementById(current).ontimeupdate = function() { updateProgress(); }
+    $("." + current).addClass("highlight");
+    $("#pause").hide();
+    $("#play").show();
+    checkError();
+    changeCurrentSong();
+    //console.log("Initialized song to: " + current);
+    
+    
+}
+
+/**
+ * Resets player for current song.
+ **/
+function setPlayer() {
+    document.getElementById("currenttime").innerHTML = "00:00";
+    document.getElementById("currentdura").innerHTML = "00:00";
+    $("#progress").css({width : "0px"});
+    $("#loading").css({ width : "0px" });
+    $("audio").attr("id", current);
+    $("audio").attr("src", audioFiles[index]);
+    $("audio").unbind("ended", endedSong);
+    $("audio").bind("ended", endedSong);
+}
+
+function changeCurrentSong() {
+        document.getElementById(current).volume = setVolume;
+        
+        if(isMobile){
+        //skip visualizer
+        }
+        else{
+        playAudioVisualize(current);}
+        
+        //console.log("Changing song to: " + current + "| volume set to: " + document.getElementById(current).volume);
+    
+    var currentTrack = $(".highlight .track").html();
+    $("#currentTrack").empty().append(currentTrack);
+    $("#currentPost").empty().append("<a href='" + postURLs[index] + "' target='_blank' class='currentPostFill'>  ︎</a>");
+}
+
+/**
+ * Checks if audio source loads after 15 seconds.
+ * Goes to next song if error.
+ **/
+function checkError() {
+    $("." + current).removeClass("error");
+    timer = window.setTimeout(function() {
+        var time = document.getElementById(current).currentTime;
+        var dura = document.getElementById(current).duration;
+        if (time === 0 && isNaN(dura)) {
+            $("." + current).addClass("error");
+            console.log("Skipping. Did not load.");
+            nextSong();
+        }
+        else {
+            console.log("Timeout function ran.");
+        }
+    }, 15000);
+}
+
+function updateProgress() {
+    var time = document.getElementById(current).currentTime;
+    var dura = document.getElementById(current).duration;
+    var loadbar = document.getElementById(current).buffered.end(0);
+    var wid = document.getElementById("progressbg").offsetWidth;
+    document.getElementById("currenttime").innerHTML = formatTime(time);
+    document.getElementById("currentdura").innerHTML = formatTime(dura);
+    var prog =  wid * (time / dura);
+    var load = wid * (loadbar / dura);
+    var w = prog;
+    $("#progress").animate({ width : w + "px" }, 1);
+    $("#loading").animate({ width : load + "px" }, 1);
+}
+
+/**
+* Change milliseconds to minutes and seconds.
+* // returns String
+**/
+function formatTime(seconds) {
+   var min = Math.floor(seconds / 60); // round
+   var sec = Math.floor(seconds % 60);
+   if (isNaN(min) || isNaN(sec)) {
+       min = "0";
+       sec = "0";
+   }
+   if (min < 10) {
+       min = "0" + min;
+   }
+   if (sec < 10) {
+       sec = "0" + sec;
+   }
+   return min + ":" + sec;
+}
+
+function loadMore() {
+    postsStart = postsEnd;
+    postsEnd += 30;
+    var link = "https://" + username + ".tumblr.com/api/read/json?start=" + postsStart + "&num=" + postsTotal + "&type=audio&tagged=" + tagged;
+    $("#loadmore").remove();
+    if (postsStart <= postsTotal) {
+        retrieveAPI(link);
+    }
+}
+
+function shiftProgress(elem, e) {
+    var pageX = e.pageX;
+    var left = elem.offset().left;
+    var dura = document.getElementById(current).duration;
+    var width = document.getElementById("progressbg").offsetWidth;
+    var position = pageX - left;
+    if (!isNaN(dura)) {
+       var newTime = ((position * dura) / width);
+       document.getElementById(current).currentTime = newTime;
+       $("#progress").css({ width : position + "px" });
+    }
+}
+
+function getFirstAudioFile() {
+  return audioFiles[0];
+}
+
+function getUsername() {
+  return username;
+}
+
+function getRepeatBool() {
+    return repeatBool;
+}
+
+function getShuffleBool() {
+    return shuffleBool;
+}
+
+function setShuffleBool(b) {
+    shuffleBool = b;
+}
+
+function setRepeatBool(b) {
+    repeatBool = b;
+}
+
+function getIndex() {
+    return index;
+}
+
+function getIndexArray(){
+    return indexArray;
+}
+
+function filter() {
+   $("#tracks").prepend(trackCache);
+
+   $(".filterout").each(function() {
+       var filterout = $(this).attr("id");
+       $("." + filterout).remove();
+   });
+
+   $(".tune").unbind("click", pressedSong);
+   $(".tune").bind("click", pressedSong);
+}
+
+function setFilter() {
+	exitSong();
+	filter();
+	$("#tracks .tune").removeClass("highlight");
+	current = $(".tune").first().attr("class");
+	current = current.substring(current.indexOf("song-"), current.indexOf(" tune"));
+	index = current.substring(current.indexOf("song-")+5, current.length);
+	enterSong();
+	$("#pause").click();
+}
+
+function getNumofHosts() {
+   var sum = 0;
+   if ($(".tune").hasClass("tumblr")) {
+	sum += 1;
+   }
+   if ($(".tune").hasClass("soundcloud")) {
+	sum += 1;
+   }
+  if ($(".tune").hasClass("bandcamp")) {
+	sum += 1;
+   }
+   if ($(".tune").hasClass("spotify")) {
+        sum += 1; 
+   }
+  return sum;
+}
+
+return {
+    init: init,
+    getIndex: getIndex,
+    getIndexArray: getIndexArray,
+    setRepeatBool: setRepeatBool,
+    getRepeatBool: getRepeatBool,
+    setShuffleBool: setShuffleBool,
+    getShuffleBool: getShuffleBool,
+    shiftProgress: shiftProgress,
+    getFirstAudioFile: getFirstAudioFile,
+    getUsername, getUsername,
+    nextSong: nextSong,
+    prevSong: prevSong,
+    repeatSong: repeatSong,
+    shuffleSong: shuffleSong,
+    shufflePlaylist: shufflePlaylist,
+    scrollToSong: scrollToSong,
+    getNumofHosts: getNumofHosts,
+    setFilter: setFilter,
+    loadMore: loadMore
+}
+
+}();
+
+window.onload = function() {
+    boombox.init();
+    $("#next").click(function() {
+        if (boombox.getRepeatBool() === true) {
+            boombox.repeatSong();
+        }
+        else if (boombox.getShuffleBool() === true) {
+            boombox.shuffleSong();
+        }
+       else {
+           boombox.nextSong();
+       }
+    });
+
+    $("#prev").click(function() {
+        if (boombox.getRepeatBool() === true) {
+            boombox.repeatSong();
+        }
+        else if (boombox.getShuffleBool() === true) {
+            boombox.shuffleSong();
+        }
+        else {
+            boombox.prevSong();
+        }
+    });
+
+    $("#player").append("<audio class='aud' crossorigin='anonymous' src='" + boombox.getFirstAudioFile() + "' preload='auto' id='song-0' controls></audio>");
+}
+
+$(document).ready(function(){
+    // mode stored in local storage
+    if (typeof(Storage) !== "undefined") {
+        console.log("Has storage. Mode is currently " + localStorage.mode + ".");
+        if (localStorage.mode === "on") {
+            $("body").addClass("bodyfilter");
+	    $("#infobar, #tracks, #labels, #playerbar").addClass("filtered");
+        }
+    } else {
+        console.log("No storage support.");
+    }
+
+    $("#pause").hide();
+    $("#buttons").fadeTo(600, 1);
+
+    $("#usernamebar").submit(function(event){
+       var value = $(this).find("input:first").val();
+       location.replace("?username=" + value);
+   });
+
+   $("#tagbar").submit(function(event){
+	var value = $(this).find("input:first").val().replace(/ /g, "+");
+        location.replace("?tag=" + value + "?username=" + boombox.getUsername());
+   });
+
+   $(".filtertype").click(function() {
+	var hosts = boombox.getNumofHosts();
+	var filtered = $(".filterout").length;
+	   
+	if (!(hosts < filtered) && hosts > 1) {
+	    $(this).toggleClass("filterout");
+	}
+	else {
+	    $(this).removeClass("filterout");
+       }
+       boombox.setFilter();
+   });
+
+   $("#repeat").click(function() {
+       if ($(this).hasClass("on")) {
+           boombox.setRepeatBool(false);
+           $(this).removeClass("on");
+       }
+       else {
+           boombox.setRepeatBool(true);
+           $(this).addClass("on");
+       }
+   });
+
+    $("#shuffle").click(function() {
+        if ($(this).hasClass("on")) {
+           boombox.setShuffleBool(false);
+           $(this).removeClass("on");
+           boombox.shufflePlaylist(boombox.getIndexArray());
+       }
+       else {
+           boombox.setShuffleBool(true);
+           $(this).addClass("on");
+       }
+       shuffleCheck = true;
+       shuffleNum = 0;
+   });
+
+    $("#progressbg, #loading, #progress").click(function(e) {
+        boombox.shiftProgress($(this), e);
+    });
+	
+    $("#open").click(function() {
+        $("#menuwrap").fadeIn();
+        $("#infobar").fadeIn();
+	$("#open").hide();
+	$("#close").show();
+    });
+ 
+    $("#close").click(function() {
+       $("#open").show();
+       $("#close").hide();
+       $("#menuwrap").fadeOut();
+        $("#infobar").fadeOut();
+    });
+
+    $("#mode").click(function() {
+        if (!$("body").hasClass("bodyfilter")) {
+	    $("body").addClass("bodyfilter");
+	    $("#infobar, #tracks, #labels, #playerbar").addClass("filtered");
+            localStorage.mode = "on";
+        }
+        else {
+            $("body").removeClass("bodyfilter");
+	    $("#infobar, #tracks, #labels, #playerbar").removeClass("filtered");
+            localStorage.mode = "off";
+        }
+    });
+
+});
+   </script>
+   
+
+</body></html>
+  </body>
+</html>
